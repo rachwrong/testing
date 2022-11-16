@@ -1,16 +1,22 @@
 pipeline {
   agent any
   stages {
-    stage ('Checkout') {
-      steps {
-        git branch:'master', url: 'https://github.com/rachwrong/testing.git'
+    stage('Build') {
+      parallel {
+        stage('Build') {
+          steps {
+            sh 'echo "building the repo"'
+          }
+        }
       }
     }
-    
-    stage('Deploy') {
+
+    stage('Deploy')
+    {
       steps {
         echo "deploying the application"
       }
     }
+
   }
 }
