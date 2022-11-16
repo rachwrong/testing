@@ -1,18 +1,21 @@
 pipeline {
 agent any
 stages {
-    stage('Build') {
-        steps {
-            sh 'python app.py'
-          }
+	stage('Test') {
+		steps {
+            git branch:'main',url:'https://github.com/rachwrong/testing.git'
         }
-
-    stage('Deploy')
-    {
-      steps {
-        echo "deploying the application"
-      }
     }
 
+    stage('OWASP Check') {
+      steps {
+        dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'Default'
+      }
+    }
   }
+post {
+    always {
+        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+    }
+    }
 }
