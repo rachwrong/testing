@@ -12,10 +12,24 @@ stages {
         dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'Default'
       }
     }
+
+    stage('Code Quality Check via SonarQube') {
+      steps {
+        script {
+          def scannerHome = tool 'SonarQube'; //
+            withSonarQubeEnv('SonarQube') { 
+              sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=test -Dsonar.sources=." 
+            }
+        }
+      }
+    }
   }
 post {
     always {
         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+    }
+    always {
+        recordIssues enabledForFailure: true, tool: sonarQube()
     }
     }
 }
