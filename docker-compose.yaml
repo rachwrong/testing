@@ -3,7 +3,8 @@ services:
   team:
     hostname: "test"
     #restart: always
-    build: ./src
+    build:
+      dockerfile: Dockerfile
     command: python app.py
     ports:
       - "5000:5000"
