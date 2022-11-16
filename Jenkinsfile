@@ -26,10 +26,8 @@ stages {
   }
 post {
     always {
-        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-    }
-    always {
-        recordIssues enabledForFailure: true, tool: sonarQube()
+	dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+	recordIssues enabledForFailure: true, tool: sonarQube()
     }
     }
 }
